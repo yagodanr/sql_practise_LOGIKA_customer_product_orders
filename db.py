@@ -16,7 +16,7 @@ class DB:
         self.cur.execute(
             '''CREATE TABLE IF NOT EXISTS products (
                 product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
+                name TEXT NOT NULL UNIQUE,
                 category TEXT NOT NULL,
                 price REAL NOT NULL
             );''')
@@ -100,6 +100,25 @@ class DB:
         response = self.cur.fetchall()
         return response
 
+    def get_product_id_by_name(self, name: str) -> int:
+        self.cur.execute('''
+            SELECT product_id 
+            FROM products
+            WHERE name=?
+        ''', (name, ))
+        
+        response = self.cur.fetchone()[0]
+        return response
+    
+    def get_customer_id_by_email(self, email: str) -> int:
+        self.cur.execute('''
+            SELECT customer_id 
+            FROM customers
+            WHERE email=?
+        ''', (email, ))
+        
+        response = self.cur.fetchone()[0]
+        return response
     
     
     
